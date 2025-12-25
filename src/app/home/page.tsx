@@ -36,40 +36,29 @@ export default function HomePage() {
               <a
                 href={portfolio.contact.resumePath}
                 className="rounded-xl border border-[color:var(--border)] px-3 py-2 text-sm text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
-                target="_blank"
-                rel="noreferrer"
               >
                 Resume PDF
               </a>
             </div>
 
             <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {portfolio.projects.map((p) => {
-                const primaryLink = p.links?.[0]?.href ?? "#";
-                const isDisabled = !primaryLink || primaryLink === "#";
-
-                return (
-                  <a
-                    key={p.slug ?? p.title}
-                    href={primaryLink}
-                    className="hud-panel p-4 hover:bg-[color:var(--accent-weak)] transition"
-                    target={isDisabled ? undefined : "_blank"}
-                    rel={isDisabled ? undefined : "noreferrer"}
-                    aria-disabled={isDisabled}
-                    onClick={(e) => {
-                      if (isDisabled) e.preventDefault();
-                    }}
-                  >
-                    <div className="hud-title mb-1">{p.title}</div>
-                    <div className="text-sm text-[color:var(--fg)]/80">
-                      {p.description}
-                    </div>
-                    <div className="mt-2 text-xs text-[color:var(--muted)]">
-                      {isDisabled ? "LINK_PENDING" : "VIEW_ON_GITHUB →"}
-                    </div>
-                  </a>
-                );
-              })}
+              {portfolio.projects.map((p) => (
+                <a
+                  key={p.slug}
+                  href={p.href}
+                  className="hud-panel p-4 hover:bg-[color:var(--accent-weak)] transition"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div className="hud-title mb-1">{p.title}</div>
+                  <div className="text-sm text-[color:var(--fg)]/80">
+                    {p.description}
+                  </div>
+                  <div className="mt-2 text-xs text-[color:var(--muted)]">
+                    VIEW_ON_GITHUB →
+                  </div>
+                </a>
+              ))}
             </div>
           </SectionCard>
 

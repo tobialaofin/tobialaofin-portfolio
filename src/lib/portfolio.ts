@@ -34,6 +34,7 @@ export const portfolio = {
     {
       title: "CMMC Compliance & Intune Security Hardening",
       slug: "cmmc-intune",
+      href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio",
       tags: ["Compliance", "Intune", "Microsoft 365", "NIST 800-171"],
       description:
         "Reviewed an existing Intune environment, helped redesign baseline policies for Windows devices, tested configurations, and produced audit-ready evidence and policy summaries for CMMC Level 2.",
@@ -46,7 +47,8 @@ export const portfolio = {
     },
     {
       title: "GCC High Deployment & Security Monitoring",
-      slug: "gcc-high-monitoring",
+      slug: "gcc-high",
+      href: "#",
       tags: ["GCC High", "Sentinel", "FedRAMP", "Azure AD/Entra"],
       description:
         "Helped plan and validate a GCC High tenant with baseline identity controls, audit logging, and monitoring. Integrated Sentinel, built alerts, and documented settings for internal audits.",
@@ -55,6 +57,7 @@ export const portfolio = {
     {
       title: "Real-Time Market Data Stream Processor",
       slug: "real-time-stream",
+      href: "https://github.com/tobialaofin/real-time-market-data-stream",
       tags: ["Python", "FastAPI", "asyncio", "JavaScript"],
       description:
         "Designed a real-time market data streaming system that ingests live/simulated equity prices and computes rolling analytics in memory. Built an async FastAPI backend and a live dashboard with rolling windows, averages, and percent change per symbol.",
@@ -77,6 +80,7 @@ export const portfolio = {
     linkedin: "https://www.linkedin.com/in/tobi-alaofin-a17b66277/",
     github: "https://github.com/tobialaofin",
     // IMPORTANT: these files must exist under /public/assets/
+    // If your resume file isn't actually named resume.pdf, either rename it or update this path.
     resumePath: "/assets/resume.pdf",
     headshotPath: "/assets/headshot.jpg",
   },
