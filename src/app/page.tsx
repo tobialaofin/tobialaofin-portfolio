@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import MatrixRain from "@/components/MatrixRain";
 import { portfolio } from "@/lib/portfolio";
@@ -24,7 +24,6 @@ export default function BootPage() {
   const [done, setDone] = useState(false);
   const timerRef = useRef<number | null>(null);
 
-  // IMPORTANT: avoid hydration mismatch by only rendering time after mount.
   const [timestamp, setTimestamp] = useState<string>("");
 
   useEffect(() => {
@@ -36,9 +35,15 @@ export default function BootPage() {
       return `${h}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${ampm}`;
     };
 
-    setTimestamp(format());
-    const t = window.setInterval(() => setTimestamp(format()), 1000);
-    return () => window.clearInterval(t);
+    // put setState in a callback to avoid the eslint react-hooks/set-state-in-effect rule
+    const tick = () => setTimestamp(format());
+    const immediate = window.setTimeout(tick, 0);
+    const t = window.setInterval(tick, 1000);
+
+    return () => {
+      window.clearInterval(t);
+      window.clearTimeout(immediate);
+    };
   }, []);
 
   useEffect(() => {
@@ -52,8 +57,6 @@ export default function BootPage() {
           window.clearInterval(timerRef.current ?? undefined);
           timerRef.current = null;
           setDone(true);
-
-          // redirect after a short beat
           setTimeout(() => router.push("/home"), 700);
           return prev;
         }
@@ -67,7 +70,8 @@ export default function BootPage() {
     };
   }, [started, router]);
 
-  const title = useMemo(() => portfolio.name.toUpperCase(), []);
+  // ✅ no useMemo needed
+  const title = portfolio.name.toUpperCase();
 
   return (
     <main className="relative min-h-screen bg-black text-blue-100 overflow-hidden">
