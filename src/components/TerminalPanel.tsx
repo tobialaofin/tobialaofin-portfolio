@@ -7,15 +7,20 @@ type TerminalPanelProps = {
   lines?: string[];
 };
 
+function formatNow() {
+  return new Intl.DateTimeFormat(undefined, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(new Date());
+}
+
 export default function TerminalPanel({ title = "OPS_TERMINAL", lines }: TerminalPanelProps) {
   const defaultLines = React.useMemo(
-    () => [
-      "BOOT_SEQUENCE: OK",
-      "AUTH: VERIFIED",
-      "CHANNEL: SECURE",
-      "MONITORING: ACTIVE",
-      "READY_FOR_TASKING →",
-    ],
+    () => ["BOOT_SEQUENCE: OK", "AUTH: VERIFIED", "CHANNEL: SECURE", "MONITORING: ACTIVE", "READY_FOR_TASKING →"],
     []
   );
 
@@ -24,21 +29,14 @@ export default function TerminalPanel({ title = "OPS_TERMINAL", lines }: Termina
   const [now, setNow] = React.useState<string>("");
 
   React.useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat(undefined, {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }).format(new Date());
+    // async state updates (no "sync setState in effect" lint error)
+    const t0 = window.setTimeout(() => setNow(formatNow()), 0);
+    const t = window.setInterval(() => setNow(formatNow()), 1000);
 
-    // Set ONLY on client (prevents SSR hydration mismatch)
-    setNow(format());
-
-    const t = window.setInterval(() => setNow(format()), 1000);
-    return () => window.clearInterval(t);
+    return () => {
+      window.clearTimeout(t0);
+      window.clearInterval(t);
+    };
   }, []);
 
   return (

@@ -1,46 +1,36 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
-import { Home, User, FolderGit2, Briefcase, BadgeCheck, Mail } from "lucide-react";
 
-const items = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/about", label: "About", icon: User },
-  { href: "/projects", label: "Projects", icon: FolderGit2 },
-  { href: "/experience", label: "Experience", icon: Briefcase },
-  { href: "/certifications", label: "Certifications", icon: BadgeCheck },
-  { href: "/contact", label: "Contact", icon: Mail },
+type NavDockProps = {
+  active?: string;
+};
+
+const tabs = [
+  { key: "home", href: "/home", label: "HOME" },
+  { key: "about", href: "/about", label: "ABOUT" },
+  { key: "experience", href: "/experience", label: "EXPERIENCE" },
+  { key: "projects", href: "/projects", label: "PROJECTS" },
+  { key: "certifications", href: "/certifications", label: "CERTIFICATIONS" },
+  { key: "contact", href: "/contact", label: "CONTACT" },
 ];
 
-export default function NavDock() {
-  const pathname = usePathname();
-
+export default function NavDock({ active }: NavDockProps) {
   return (
-    <nav
-      className={clsx(
-        "rounded-2xl border border-emerald-200/20 bg-black/45 backdrop-blur-md",
-        "px-3 py-3 flex flex-wrap items-center gap-2"
-      )}
-    >
-      {items.map((it) => {
-        const active = pathname === it.href;
-        const Icon = it.icon;
+    <nav className="px-5 py-3 border-b border-[color:var(--border)] flex flex-wrap gap-2">
+      {tabs.map((t) => {
+        const isActive = active === t.key;
         return (
           <Link
-            key={it.href}
-            href={it.href}
-            className={clsx(
-              "inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition",
-              "border border-transparent",
-              active
-                ? "bg-emerald-500/15 text-emerald-100 border-emerald-400/25"
-                : "text-emerald-100/80 hover:bg-emerald-500/10 hover:text-emerald-50"
-            )}
+            key={t.key}
+            href={t.href}
+            className={[
+              "rounded-xl border px-3 py-2 text-xs tracking-widest transition",
+              "border-[color:var(--border)]",
+              isActive
+                ? "bg-[color:var(--accent-weak)] text-[color:var(--fg)]"
+                : "text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]",
+            ].join(" ")}
           >
-            <Icon size={16} />
-            {it.label}
+            {t.label}
           </Link>
         );
       })}

@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function SectionCard({
   title,
   subtitle,
@@ -15,9 +17,7 @@ export default function SectionCard({
         <div>
           <div className="hud-title">{title}</div>
           {subtitle ? (
-            <div className="mt-1 text-[11px] tracking-widest text-[color:var(--muted)]">
-              {subtitle}
-            </div>
+            <div className="mt-1 text-[11px] tracking-widest text-[color:var(--muted)]">{subtitle}</div>
           ) : null}
         </div>
         {rightSlot ? <div>{rightSlot}</div> : null}
