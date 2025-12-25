@@ -2,11 +2,10 @@ import Link from "next/link";
 import HUDShell from "@/components/HUDShell";
 import ProfileCard from "@/components/ProfileCard";
 import SectionCard from "@/components/SectionCard";
-import { portfolio } from "@/lib/portfolio";
 
 export default function ContactPage() {
   return (
-    <HUDShell>
+    <HUDShell active="contact">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <ProfileCard />
 

@@ -1,18 +1,11 @@
-// src/app/projects/page.tsx
-import BackToHome from "@/components/BackToHome";
+import Link from "next/link";
+import HUDShell from "@/components/HUDShell";
 
 const projects = [
   {
     name: "CMMC Compliance & Intune Security Hardening",
     status: "ACTIVE",
-    tags: [
-      "Intune",
-      "CMMC",
-      "Microsoft 365",
-      "Compliance",
-      "Policy Management",
-      "NIST 800-171",
-    ],
+    tags: ["Intune", "CMMC", "Microsoft 365", "Compliance", "Policy Management", "NIST 800-171"],
     bullets: [
       "Reviewed an existing Intune environment and mapped technical controls to CMMC Level 2 / NIST 800-171 requirements.",
       "Designed and tuned Windows endpoint baselines (device restrictions, attack surface reduction, identity hardening, and configuration policies).",
@@ -58,56 +51,50 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <main className="relative min-h-screen">
-      <div className="hud-frame">
-        {/* Header row: Title LEFT, Back button RIGHT */}
-        <div className="p-5 flex items-center justify-between">
-          <div className="hud-title">PROJECT_REPOSITORY</div>
-          <BackToHome />
-        </div>
-
-        {/* Projects list (RESTORED) */}
-        <div className="px-5 pb-6 space-y-4">
-          {projects.map((p) => (
-            <div key={p.name} className="hud-panel p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-[16px] font-bold">{p.name}</div>
-                  <div className="mt-1 text-[12px] text-[color:var(--muted)]">
-                    {p.tags.join(" • ")}
-                  </div>
-                </div>
-
-                <div className="text-[11px] text-[color:var(--muted)]">
-                  STATUS: <span className="text-[color:var(--text)]/90">{p.status}</span>
-                </div>
+    <HUDShell
+      active="projects"
+      rightSlot={
+        <Link
+          href="/home"
+          className="rounded-xl border border-[color:var(--border)] px-3 py-2 text-xs text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
+        >
+          ← BACK_TO_HOME
+        </Link>
+      }
+      title="PROJECT_REPOSITORY"
+    >
+      <div className="space-y-4">
+        {projects.map((p) => (
+          <div key={p.name} className="hud-panel p-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-[16px] font-bold">{p.name}</div>
+                <div className="mt-1 text-[12px] text-[color:var(--muted)]">{p.tags.join(" • ")}</div>
               </div>
 
-              <ul className="mt-4 space-y-2 text-[13px] leading-relaxed list-disc pl-5">
-                {p.bullets.map((b, idx) => (
-                  <li key={`${p.name}-b-${idx}`}>{b}</li>
-                ))}
-              </ul>
-
-              {p.links.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {p.links.map((l) => (
-                    <a
-                      key={l.href}
-                      className="hud-link"
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {l.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+              <div className="text-[11px] text-[color:var(--muted)]">
+                STATUS: <span className="text-[color:var(--text)]/90">{p.status}</span>
+              </div>
             </div>
-          ))}
-        </div>
+
+            <ul className="mt-4 space-y-2 text-[13px] leading-relaxed list-disc pl-5">
+              {p.bullets.map((b, idx) => (
+                <li key={`${p.name}-${idx}`}>{b}</li>
+              ))}
+            </ul>
+
+            {p.links.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-3">
+                {p.links.map((l) => (
+                  <a key={l.href} className="hud-link" href={l.href} target="_blank" rel="noreferrer">
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    </main>
+    </HUDShell>
   );
 }

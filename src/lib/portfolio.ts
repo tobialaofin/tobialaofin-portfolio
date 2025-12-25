@@ -33,24 +33,26 @@ export const portfolio = {
   projects: [
     {
       title: "CMMC Compliance & Intune Security Hardening",
+      slug: "cmmc-intune",
       tags: ["Compliance", "Intune", "Microsoft 365", "NIST 800-171"],
       description:
         "Reviewed an existing Intune environment, helped redesign baseline policies for Windows devices, tested configurations, and produced audit-ready evidence and policy summaries for CMMC Level 2.",
-      links: [{ label: "Notes", href: "#" }],
+      links: [{ label: "GitHub", href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio" }],
     },
     {
       title: "GCC High Deployment & Security Monitoring",
       tags: ["GCC High", "Sentinel", "FedRAMP", "Azure AD/Entra"],
       description:
         "Helped plan and validate a GCC High tenant with baseline identity controls, audit logging, and monitoring. Integrated Sentinel, built alerts, and documented settings for internal audits.",
-      links: [{ label: "Notes", href: "#" }],
+      links: [{ label: "GitHub", href: "#" }],
     },
     {
       title: "Real-Time Market Data Stream Processor",
+      slug: "real-time-stream",
       tags: ["Python", "FastAPI", "asyncio", "JavaScript"],
       description:
         "Designed a real-time market data streaming system that ingests live/simulated equity prices and computes rolling analytics in memory. Built an async FastAPI backend and a live dashboard with rolling windows, averages, and percent change per symbol.",
-      links: [{ label: "GitHub", href: "#" }],
+      links: [{ label: "GitHub", href: "https://github.com/tobialaofin/real-time-market-data-stream" }],
     },
   ],
   certifications: [

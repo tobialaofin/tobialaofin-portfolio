@@ -1,26 +1,34 @@
-import type { ReactNode } from "react";
-import MatrixRain from "@/components/MatrixRain";
+import React from "react";
+import NavDock from "@/components/NavDock";
 
-export default function HUDShell({ children }: { children: ReactNode }) {
+type HUDShellProps = {
+  children: React.ReactNode;
+  active?: string;
+  title?: string;
+  rightSlot?: React.ReactNode;
+};
+
+export default function HUDShell({ children, active, title, rightSlot }: HUDShellProps) {
   return (
-    <main className="relative min-h-screen bg-black text-[color:var(--text)] overflow-hidden">
-      {/* Background effect */}
-      <MatrixRain tone="blue" />
-
-      {/* Main content container */}
-      <div className="relative z-10 mx-auto w-full max-w-[1120px] px-4 sm:px-6 py-10">
-        <div className="hud-frame">
-          <div className="hud-topbar">
-            <div className="hud-brand">
-              <span className="hud-dot" />
-              <span className="hud-brand-text">TOBI_ALAOFIN — PORTFOLIO</span>
-              <span className="hud-chip">STATUS: ONLINE</span>
-              <span className="hud-chip">ENC: TLS</span>
-            </div>
+    <main className="relative min-h-screen">
+      <div className="hud-frame">
+        {/* Top HUD header */}
+        <div className="px-5 py-4 border-b border-[color:var(--border)] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* If you already have a brand title somewhere else, keep it there */}
+            <div className="hud-title">{title ?? "TOBI_ALAOFIN — PORTFOLIO"}</div>
           </div>
 
-          <div className="p-5">{children}</div>
+          <div className="flex items-center gap-3">
+            {rightSlot ? <div>{rightSlot}</div> : null}
+          </div>
         </div>
+
+        {/* Navigation */}
+        <NavDock active={active} />
+
+        {/* Page content */}
+        <div className="p-5">{children}</div>
       </div>
     </main>
   );
