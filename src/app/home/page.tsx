@@ -36,38 +36,40 @@ export default function HomePage() {
               <a
                 href={portfolio.contact.resumePath}
                 className="rounded-xl border border-[color:var(--border)] px-3 py-2 text-sm text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
-                target="_blank"
-                rel="noreferrer"
               >
                 Resume PDF
               </a>
             </div>
 
             <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {portfolio.projects.map((p, idx) => {
-                // Your portfolio items have `links`, not `href`
-                const projectHref = p.links?.[0]?.href;
+              {portfolio.projects.map((p) => {
+                // Your portfolio.ts uses `links`, not `href`
+                const primaryLink = p.links?.[0];
+                const href = primaryLink?.href;
 
                 return (
                   <a
-                    key={(p as any).slug ?? p.title ?? idx}
-                    href={projectHref ?? "#"}
-                    className="hud-panel p-4 hover:bg-[color:var(--accent-weak)] transition"
-                    target={projectHref ? "_blank" : undefined}
-                    rel={projectHref ? "noreferrer" : undefined}
-                    aria-disabled={!projectHref}
+                    key={("slug" in p && p.slug) ? p.slug : p.title}
+                    href={href ?? "#"}
+                    className={[
+                      "hud-panel p-4 transition",
+                      href
+                        ? "hover:bg-[color:var(--accent-weak)]"
+                        : "opacity-60 cursor-not-allowed",
+                    ].join(" ")}
+                    target={href ? "_blank" : undefined}
+                    rel={href ? "noreferrer" : undefined}
+                    aria-disabled={!href}
                     onClick={(e) => {
-                      if (!projectHref) e.preventDefault();
+                      if (!href) e.preventDefault();
                     }}
                   >
                     <div className="hud-title mb-1">{p.title}</div>
-
                     <div className="text-sm text-[color:var(--fg)]/80">
                       {p.description}
                     </div>
-
                     <div className="mt-2 text-xs text-[color:var(--muted)]">
-                      {projectHref ? "VIEW_ON_GITHUB →" : "NO_LINK_AVAILABLE"}
+                      {primaryLink?.label ?? "VIEW_ON_GITHUB"} →
                     </div>
                   </a>
                 );
