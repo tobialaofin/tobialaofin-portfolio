@@ -3,15 +3,19 @@
 @tailwind utilities;
 
 :root {
-  /* Theme */
-  --bg: 0 0 0;
-  --fg: 219 234 254; /* blue-100-ish */
-  --muted: 191 219 254;
-  --border: rgba(59, 130, 246, 0.28);
-  --panel: rgba(0, 0, 0, 0.58);
-  --panel2: rgba(0, 0, 0, 0.38);
-  --accent: 59 130 246;
-  --accent-weak: rgba(59, 130, 246, 0.10);
+  /* Blue HUD theme */
+  --bg: 3 6 18;                /* near-black navy */
+  --fg: 235 245 255;           /* white */
+  --muted: 175 205 255;        /* soft blue-white */
+
+  --accent: 59 130 246;        /* blue */
+  --accentSoft: 59 130 246 / 0.18;
+
+  --border: 59 130 246 / 0.28;
+
+  --panel: 0 0 0 / 0.62;
+  --panel2: 0 0 0 / 0.40;
+  --panel3: 59 130 246 / 0.08;
 }
 
 html,
@@ -20,78 +24,107 @@ body {
 }
 
 body {
-  background: rgb(var(--bg));
+  background: radial-gradient(
+      1200px 900px at 65% 20%,
+      rgba(59, 130, 246, 0.10),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 700px at 30% 70%,
+      rgba(59, 130, 246, 0.08),
+      transparent 60%
+    ),
+    rgb(var(--bg));
   color: rgb(var(--fg));
 }
 
-/* Frame centers your content like Kyle's */
+/* =========================
+   Kyle-style HUD primitives
+   ========================= */
+
 .hud-frame {
-  width: min(1200px, calc(100% - 32px));
-  margin: 18px auto;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.35));
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.10);
+  width: min(1180px, calc(100% - 2.5rem));
+  margin: 1.25rem auto;
+  border: 1px solid rgba(var(--accent), 0.28);
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 16px;
+  box-shadow: 0 0 45px rgba(59, 130, 246, 0.10);
   overflow: hidden;
 }
 
-/* Panels */
 .hud-panel {
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--panel2);
+  border: 1px solid rgba(var(--accent), 0.22);
+  background: rgba(var(--panel));
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.06);
 }
 
 .hud-panel-strong {
-  background: var(--panel);
+  background: rgba(var(--panel));
+  border-color: rgba(var(--accent), 0.32);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.12);
 }
 
-/* Text bits */
 .hud-title {
   font-size: 12px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(219, 234, 254, 0.95);
+  color: rgba(var(--fg), 0.92);
 }
 
 .hud-link {
   font-size: 12px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(219, 234, 254, 0.9);
+  color: rgba(var(--fg), 0.85);
   text-decoration: none;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--accent), 0.28);
+  background: rgba(59, 130, 246, 0.06);
 }
 
 .hud-link:hover {
-  color: rgba(219, 234, 254, 1);
-  text-decoration: underline;
+  background: rgba(59, 130, 246, 0.12);
 }
 
 .hud-chip {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--accent), 0.22);
   background: rgba(59, 130, 246, 0.08);
-  color: rgba(219, 234, 254, 0.92);
+  color: rgba(var(--fg), 0.86);
 }
 
-.hud-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  padding: 10px 12px;
+/* nicer spacing for the top nav (Kyle-like) */
+.hud-topnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(var(--accent), 0.22);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.hud-topnav a {
   font-size: 12px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(219, 234, 254, 0.9);
-  background: transparent;
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--accent), 0.22);
+  color: rgba(var(--fg), 0.84);
 }
 
-.hud-btn:hover {
-  background: var(--accent-weak);
+.hud-topnav a:hover {
+  background: rgba(59, 130, 246, 0.10);
+}
+
+.hud-topnav a[data-active="true"] {
+  background: rgba(59, 130, 246, 0.16);
+  border-color: rgba(var(--accent), 0.40);
+  color: rgba(var(--fg), 0.95);
 }

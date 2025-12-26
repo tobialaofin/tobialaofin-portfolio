@@ -15,21 +15,11 @@ const tabs = [
 
 export default function NavDock({ active }: NavDockProps) {
   return (
-    <nav className="px-5 py-3 border-b border-[color:var(--border)] flex flex-wrap gap-2">
+    <nav className="hud-topnav">
       {tabs.map((t) => {
         const isActive = active === t.key;
         return (
-          <Link
-            key={t.key}
-            href={t.href}
-            className={[
-              "rounded-xl border px-3 py-2 text-xs tracking-widest transition",
-              "border-[color:var(--border)]",
-              isActive
-                ? "bg-[color:var(--accent-weak)] text-[color:var(--fg)]"
-                : "text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]",
-            ].join(" ")}
-          >
+          <Link key={t.key} href={t.href} data-active={isActive ? "true" : "false"}>
             {t.label}
           </Link>
         );
