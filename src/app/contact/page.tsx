@@ -1,73 +1,71 @@
-import Link from "next/link";
 import HUDShell from "@/components/HUDShell";
-import ProfileCard from "@/components/ProfileCard";
-import SectionCard from "@/components/SectionCard";
+import { portfolio } from "@/lib/portfolio";
 
 export default function ContactPage() {
   return (
-    <HUDShell active="contact">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <ProfileCard />
+    <HUDShell active="contact" title="CONTACT_CHANNEL">
+      <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
+        {/* LEFT: PROFILE + QUICK LINKS */}
+        <div className="space-y-6">
+          <div className="hud-panel hud-panel-strong p-6">
+            <div className="hud-title mb-4">USER_PROFILE</div>
 
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="hud-title">CONTACT_CHANNELS</div>
-            <Link
-              href="/home"
-              className="rounded-xl border border-[color:var(--border)] px-3 py-2 text-xs text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
-            >
-              ← BACK_TO_HOME
-            </Link>
-          </div>
-
-          <SectionCard title="ESTABLISH_UPLINK">
-            <div className="text-xs text-[color:var(--muted)] mb-4">
-              SECURE_CHANNEL // ENCRYPTION: ENABLED
-            </div>
-
-            <form className="grid gap-3">
-              <div className="grid md:grid-cols-2 gap-3">
-                <label className="grid gap-1">
-                  <span className="text-xs text-[color:var(--muted)]">NAME</span>
-                  <input
-                    className="rounded-lg border border-[color:var(--border)] bg-black/40 px-3 py-2 text-[color:var(--fg)]"
-                    placeholder="Your name..."
-                  />
-                </label>
-
-                <label className="grid gap-1">
-                  <span className="text-xs text-[color:var(--muted)]">EMAIL</span>
-                  <input
-                    className="rounded-lg border border-[color:var(--border)] bg-black/40 px-3 py-2 text-[color:var(--fg)]"
-                    placeholder="you@email.com"
-                  />
-                </label>
+            <div className="flex items-start gap-5">
+              <div className="w-[140px] h-[140px] rounded-2xl overflow-hidden border border-[color:var(--border)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={portfolio.contact.headshotPath}
+                  alt="Headshot"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
-              <label className="grid gap-1">
-                <span className="text-xs text-[color:var(--muted)]">SUBJECT</span>
-                <input
-                  className="rounded-lg border border-[color:var(--border)] bg-black/40 px-3 py-2 text-[color:var(--fg)]"
-                  placeholder="Project inquiry..."
-                />
-              </label>
+              <div className="min-w-0 pt-1">
+                <div className="text-xl font-semibold text-white">{portfolio.name}</div>
+                <div className="text-sm text-white/80 mt-1">{portfolio.headline}</div>
+                <div className="text-sm text-white/60 mt-2">{portfolio.location}</div>
+              </div>
+            </div>
+          </div>
 
-              <label className="grid gap-1">
-                <span className="text-xs text-[color:var(--muted)]">MESSAGE</span>
-                <textarea
-                  className="min-h-[180px] rounded-lg border border-[color:var(--border)] bg-black/40 px-3 py-2 text-[color:var(--fg)]"
-                  placeholder="Enter your transmission..."
-                />
-              </label>
+          <div className="hud-panel p-6">
+            <div className="hud-title mb-4">QUICK_LINKS</div>
+            <div className="flex flex-wrap gap-4">
+              <a className="hud-link" href={portfolio.contact.resumePath} target="_blank" rel="noreferrer">
+                RESUME_PDF →
+              </a>
+              <a className="hud-link" href={portfolio.contact.linkedin} target="_blank" rel="noreferrer">
+                LINKEDIN →
+              </a>
+              <a className="hud-link" href={portfolio.contact.github} target="_blank" rel="noreferrer">
+                GITHUB →
+              </a>
+              <a className="hud-link" href={`mailto:${portfolio.contact.email}`}>
+                EMAIL →
+              </a>
+            </div>
+          </div>
+        </div>
 
-              <button
-                type="button"
-                className="mt-2 rounded-xl border border-[color:var(--border)] bg-[color:var(--accent-weak)] hover:bg-[color:var(--accent-weak-hover)] px-4 py-3 text-sm"
-              >
-                TRANSMIT_DATA →
-              </button>
-            </form>
-          </SectionCard>
+        {/* RIGHT: MESSAGE */}
+        <div className="hud-panel hud-panel-strong p-6">
+          <div className="hud-title mb-4">MESSAGE</div>
+
+          <p className="text-sm text-white/85 leading-relaxed">
+            I’m currently open to Cloud, Software Engineering, and Cybersecurity roles (internship or full-time).
+            If you’re hiring or know a team that needs someone who can build secure systems, work in regulated
+            environments, and document evidence that holds up in audits, I’d love to connect.
+          </p>
+
+          <div className="mt-6 text-sm text-white/80 leading-relaxed">
+            <div className="text-white/90 font-semibold tracking-widest">PREFERRED_TOPICS</div>
+            <ul className="mt-3 list-disc pl-5 space-y-2">
+              <li>Azure / Microsoft security (Entra ID, Intune, Sentinel)</li>
+              <li>CMMC / NIST 800-171 compliance engineering</li>
+              <li>Detection engineering, logging, and operational security</li>
+              <li>Full-stack + backend systems that are secure by default</li>
+            </ul>
+          </div>
         </div>
       </div>
     </HUDShell>

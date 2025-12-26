@@ -3,19 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Blue HUD theme */
-  --bg: 3 6 18;                /* near-black navy */
-  --fg: 235 245 255;           /* white */
-  --muted: 175 205 255;        /* soft blue-white */
+  --bg: #02040b;
+  --panel: rgba(0, 0, 0, 0.55);
+  --panel-strong: rgba(0, 0, 0, 0.72);
 
-  --accent: 59 130 246;        /* blue */
-  --accentSoft: 59 130 246 / 0.18;
+  --fg: #ffffff;
+  --muted: rgba(255, 255, 255, 0.55);
 
-  --border: 59 130 246 / 0.28;
-
-  --panel: 0 0 0 / 0.62;
-  --panel2: 0 0 0 / 0.40;
-  --panel3: 59 130 246 / 0.08;
+  /* BLUE THEME */
+  --accent: #3b82f6; /* blue-500 */
+  --accent-weak: rgba(59, 130, 246, 0.12);
+  --border: rgba(59, 130, 246, 0.35);
+  --border-strong: rgba(59, 130, 246, 0.6);
 }
 
 html,
@@ -24,107 +23,240 @@ body {
 }
 
 body {
-  background: radial-gradient(
-      1200px 900px at 65% 20%,
-      rgba(59, 130, 246, 0.10),
-      transparent 60%
-    ),
-    radial-gradient(
-      1000px 700px at 30% 70%,
-      rgba(59, 130, 246, 0.08),
-      transparent 60%
-    ),
-    rgb(var(--bg));
-  color: rgb(var(--fg));
+  background: radial-gradient(1200px 800px at 20% 10%, rgba(59, 130, 246, 0.10), transparent 55%),
+    radial-gradient(900px 700px at 80% 20%, rgba(59, 130, 246, 0.07), transparent 50%),
+    linear-gradient(180deg, #02040b, #000000 65%);
+  color: var(--fg);
 }
 
-/* =========================
-   Kyle-style HUD primitives
-   ========================= */
+/* ---------- HUD FRAME ---------- */
+.hud-root {
+  background: transparent;
+}
 
 .hud-frame {
-  width: min(1180px, calc(100% - 2.5rem));
-  margin: 1.25rem auto;
-  border: 1px solid rgba(var(--accent), 0.28);
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: 16px;
-  box-shadow: 0 0 45px rgba(59, 130, 246, 0.10);
+  position: relative;
+  z-index: 2;
+  margin: 18px auto;
+  width: min(1280px, calc(100% - 24px));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 60px rgba(59, 130, 246, 0.12);
   overflow: hidden;
 }
 
-.hud-panel {
-  border: 1px solid rgba(var(--accent), 0.22);
-  background: rgba(var(--panel));
-  border-radius: 14px;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.06);
-}
-
-.hud-panel-strong {
-  background: rgba(var(--panel));
-  border-color: rgba(var(--accent), 0.32);
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.12);
-}
-
+/* ---------- TYPO ---------- */
 .hud-title {
   font-size: 12px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(var(--fg), 0.92);
+  color: rgba(255, 255, 255, 0.80);
 }
 
-.hud-link {
-  font-size: 12px;
+.hud-clock {
+  font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(var(--fg), 0.85);
-  text-decoration: none;
-  padding: 0.55rem 0.75rem;
-  border-radius: 12px;
-  border: 1px solid rgba(var(--accent), 0.28);
-  background: rgba(59, 130, 246, 0.06);
+  color: var(--muted);
 }
 
-.hud-link:hover {
-  background: rgba(59, 130, 246, 0.12);
-}
-
-.hud-chip {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.5rem;
-  border-radius: 10px;
-  border: 1px solid rgba(var(--accent), 0.22);
-  background: rgba(59, 130, 246, 0.08);
-  color: rgba(var(--fg), 0.86);
-}
-
-/* nicer spacing for the top nav (Kyle-like) */
-.hud-topnav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  padding: 0.9rem 1.1rem;
-  border-bottom: 1px solid rgba(var(--accent), 0.22);
-  background: rgba(0, 0, 0, 0.35);
-}
-
-.hud-topnav a {
+/* ---------- NAV TABS ---------- */
+.hud-tab {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 12px 16px;
   font-size: 12px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  padding: 0.55rem 0.8rem;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.hud-tab--active {
+  background: var(--accent-weak);
+  border-color: var(--border-strong);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.hud-tab--inactive {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.hud-tab--inactive:hover {
+  background: var(--accent-weak);
+}
+
+/* ---------- PANELS ---------- */
+.hud-panel {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.08);
+}
+
+.hud-panel-strong {
+  background: var(--panel-strong);
+  border-color: var(--border-strong);
+}
+
+/* ---------- LINKS ---------- */
+.hud-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  border: 1px solid rgba(var(--accent), 0.22);
-  color: rgba(var(--fg), 0.84);
+  padding: 10px 12px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(59, 130, 246, 0.06);
+  transition: background 160ms ease, border-color 160ms ease;
 }
 
-.hud-topnav a:hover {
-  background: rgba(59, 130, 246, 0.10);
+.hud-link:hover {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: var(--border-strong);
 }
 
-.hud-topnav a[data-active="true"] {
-  background: rgba(59, 130, 246, 0.16);
-  border-color: rgba(var(--accent), 0.40);
-  color: rgba(var(--fg), 0.95);
+.hud-link-block {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ---------- TAG CHIPS ---------- */
+.hud-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+/* ---------- TERMINAL ---------- */
+.hud-terminal {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.90);
+}
+
+.hud-terminal .muted {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- MOVING PIXEL BACKGROUND ---------- */
+.pixel-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.pixel-bg__layer {
+  position: absolute;
+  inset: -40%;
+  background-repeat: repeat;
+  opacity: 0.55;
+  filter: blur(0.2px);
+  transform: translate3d(0, 0, 0);
+}
+
+.pixel-bg__layer--a {
+  background-image:
+    radial-gradient(circle at 10px 10px, rgba(59, 130, 246, 0.35) 1px, transparent 2px),
+    radial-gradient(circle at 30px 30px, rgba(59, 130, 246, 0.18) 1px, transparent 2px);
+  background-size: 48px 48px;
+  animation: driftA 18s linear infinite;
+}
+
+.pixel-bg__layer--b {
+  background-image:
+    radial-gradient(circle at 8px 8px, rgba(255, 255, 255, 0.08) 1px, transparent 2px),
+    radial-gradient(circle at 26px 26px, rgba(59, 130, 246, 0.12) 1px, transparent 2px);
+  background-size: 64px 64px;
+  animation: driftB 26s linear infinite;
+  opacity: 0.35;
+}
+
+.pixel-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(1200px 900px at 50% 40%, transparent 35%, rgba(0, 0, 0, 0.65) 75%);
+  opacity: 0.95;
+}
+
+@keyframes driftA {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-120px, 80px, 0); }
+}
+
+@keyframes driftB {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(90px, -140px, 0); }
+}
+/* ===========================
+   MOVING PIXEL / DOT BACKGROUND
+   =========================== */
+
+.pixel-bg-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pixel-bg-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-repeat: repeat;
+  background-size: 22px 22px;
+  mix-blend-mode: screen;
+  filter: blur(0.2px);
+}
+
+.pixel-bg-layer-a {
+  background-image: radial-gradient(rgba(80, 160, 255, 0.55) 1px, transparent 1px);
+  animation: pixelDriftA 18s linear infinite;
+}
+
+.pixel-bg-layer-b {
+  opacity: 0.20;
+  background-size: 36px 36px;
+  background-image: radial-gradient(rgba(80, 160, 255, 0.35) 1px, transparent 1px);
+  animation: pixelDriftB 28s linear infinite;
+}
+
+.pixel-bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+@keyframes pixelDriftA {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 260px 180px;
+  }
+}
+
+@keyframes pixelDriftB {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -300px 220px;
+  }
 }

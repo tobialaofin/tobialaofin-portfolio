@@ -1,29 +1,42 @@
+"use client";
+
 import Link from "next/link";
+import React from "react";
 
 type NavDockProps = {
   active?: string;
 };
 
-const tabs = [
-  { key: "home", href: "/home", label: "HOME" },
-  { key: "about", href: "/about", label: "ABOUT" },
-  { key: "experience", href: "/experience", label: "EXPERIENCE" },
-  { key: "projects", href: "/projects", label: "PROJECTS" },
-  { key: "certifications", href: "/certifications", label: "CERTIFICATIONS" },
-  { key: "contact", href: "/contact", label: "CONTACT" },
+const TABS = [
+  { key: "home", label: "HOME", href: "/home" },
+  { key: "about", label: "ABOUT", href: "/about" },
+  { key: "projects", label: "PROJECTS", href: "/projects" },
+  { key: "contact", label: "CONTACT", href: "/contact" },
 ];
 
 export default function NavDock({ active }: NavDockProps) {
   return (
-    <nav className="hud-topnav">
-      {tabs.map((t) => {
-        const isActive = active === t.key;
-        return (
-          <Link key={t.key} href={t.href} data-active={isActive ? "true" : "false"}>
-            {t.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="hud-panel hud-panel-strong px-4 py-3">
+      <div className="flex flex-wrap items-center gap-3">
+        {TABS.map((t) => {
+          const isActive = active === t.key;
+          return (
+            <Link
+              key={t.key}
+              href={t.href}
+              className={[
+                "rounded-xl border px-4 py-3 text-xs tracking-widest transition",
+                "border-[color:var(--border)]",
+                isActive
+                  ? "bg-[color:var(--accent-weak)] text-white"
+                  : "text-white/85 hover:bg-[color:var(--accent-weak)]",
+              ].join(" ")}
+            >
+              {t.label}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }

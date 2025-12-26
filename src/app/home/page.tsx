@@ -1,37 +1,73 @@
-import Link from "next/link";
 import HUDShell from "@/components/HUDShell";
 import SectionCard from "@/components/SectionCard";
 import ProjectGrid from "@/components/ProjectGrid";
 import { portfolio } from "@/lib/portfolio";
 
+const TERMINAL_LINES = [
+  "BOOT_SEQUENCE: OK",
+  "AUTH: VERIFIED",
+  "CHANNEL: SECURE",
+  "MONITORING: ACTIVE",
+  "READY_FOR_TASKING →",
+];
+
 export default function HomePage() {
   return (
     <HUDShell
       active="home"
-      rightSlot={
-        <div className="flex items-center gap-2">
-          <a className="hud-link" href={portfolio.contact.linkedin} target="_blank" rel="noreferrer">
-            LINKEDIN
-          </a>
-          <a className="hud-link" href={portfolio.contact.github} target="_blank" rel="noreferrer">
-            GITHUB
-          </a>
-          <Link className="hud-link" href={portfolio.contact.resumePath} target="_blank">
-            RESUME
-          </Link>
+      title="HOME_CONSOLE"
+      topSlot={
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-6">
+          {/* LEFT: QUICK LINKS */}
+          <div className="hud-panel hud-panel-strong p-6">
+            <div className="hud-title mb-4">QUICK_LINKS</div>
+
+            <div className="flex flex-wrap gap-4">
+              <a className="hud-link" href={portfolio.contact.resumePath} target="_blank" rel="noreferrer">
+                RESUME_PDF →
+              </a>
+              <a className="hud-link" href={portfolio.contact.linkedin} target="_blank" rel="noreferrer">
+                LINKEDIN →
+              </a>
+              <a className="hud-link" href={portfolio.contact.github} target="_blank" rel="noreferrer">
+                GITHUB →
+              </a>
+              <a className="hud-link" href={`mailto:${portfolio.contact.email}`}>
+                EMAIL →
+              </a>
+            </div>
+
+            <div className="mt-4 text-[11px] tracking-widest text-[color:var(--muted)]">
+              STATUS: ONLINE · ENCRYPTION: TLS · THEME: BLUE_HUD
+            </div>
+          </div>
+
+          {/* RIGHT: TERMINAL */}
+          <div className="hud-panel hud-panel-strong p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="hud-title">OPS_TERMINAL</div>
+              <div className="text-[11px] tracking-widest text-[color:var(--muted)]">LIVE_FEED</div>
+            </div>
+
+            <div className="mt-4 hud-terminal space-y-1">
+              {TERMINAL_LINES.map((l) => (
+                <div key={l}>{l}</div>
+              ))}
+              <div className="muted">&gt; TIP: USE NAV TABS ABOVE</div>
+            </div>
+          </div>
         </div>
       }
     >
-      {/* Kyle-like: left profile + right content with terminal in upper-right */}
-      <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-6">
         {/* LEFT SIDEBAR */}
-        <div className="space-y-5">
-          <div className="hud-panel hud-panel-strong p-5">
-            <div className="hud-title mb-3">USER_PROFILE</div>
+        <div className="space-y-6">
+          <div className="hud-panel hud-panel-strong p-6">
+            <div className="hud-title mb-4">USER_PROFILE</div>
 
-            <div className="flex items-start gap-4">
-              <div className="w-[92px] h-[92px] rounded-xl overflow-hidden border border-[color:var(--border)] bg-black/40">
-                {/* If you already have an <img> or next/image here, keep it */}
+            <div className="flex items-start gap-5">
+              <div className="w-[150px] h-[150px] rounded-2xl overflow-hidden border border-[color:var(--border)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={portfolio.contact.headshotPath}
                   alt="Headshot"
@@ -39,51 +75,30 @@ export default function HomePage() {
                 />
               </div>
 
-              <div className="min-w-0">
-                <div className="text-lg font-semibold">{portfolio.name}</div>
-                <div className="text-sm text-[color:var(--muted)] mt-1">{portfolio.headline}</div>
-                <div className="text-sm text-[color:var(--muted)]/85 mt-1">{portfolio.location}</div>
+              <div className="min-w-0 pt-1">
+                <div className="text-xl font-semibold text-white">{portfolio.name}</div>
+                <div className="text-sm text-white/80 mt-1">{portfolio.headline}</div>
+                <div className="text-sm text-[color:var(--muted)] mt-2">{portfolio.location}</div>
               </div>
-            </div>
-
-            <div className="mt-4 text-sm text-[color:var(--fg)]/85 leading-relaxed">
-              {portfolio.focus}
             </div>
           </div>
 
-          <SectionCard title="HIGHLIGHTS">
-            <ul className="list-disc pl-5 space-y-2 text-[color:var(--fg)]/85 text-sm">
+          <div className="hud-panel p-6">
+            <div className="hud-title mb-4">HIGHLIGHTS</div>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-white/85">
               {portfolio.highlights.map((h) => (
                 <li key={h}>{h}</li>
               ))}
             </ul>
-          </SectionCard>
+          </div>
         </div>
 
-        {/* RIGHT CONTENT */}
-        <div className="space-y-5">
-          {/* TOP ROW: terminal box on upper-right (Kyle-style) */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
-            <SectionCard title="ABOUT_ME" rightSlot={<Link className="hud-link" href="/about">OPEN</Link>}>
-              <div className="text-sm text-[color:var(--fg)]/85 leading-relaxed space-y-2">
-                <p>{portfolio.about.intro}</p>
-                <p className="text-[color:var(--muted)]">{portfolio.about.now}</p>
-              </div>
-            </SectionCard>
+        {/* MAIN CONTENT */}
+        <div className="space-y-6">
+          <SectionCard title="FOCUS">
+            <div className="text-sm text-white/85 leading-relaxed">{portfolio.focus}</div>
+          </SectionCard>
 
-            {/* ✅ TERMINAL BOX (upper right) */}
-            <SectionCard title="OPS_TERMINAL" subtitle="STATUS_FEED">
-              <div className="font-mono text-[12px] leading-relaxed text-[color:var(--fg)]/90 space-y-1">
-                <div>BOOT_SEQUENCE: OK</div>
-                <div>AUTH: VERIFIED</div>
-                <div>CHANNEL: SECURE</div>
-                <div>MONITORING: ACTIVE</div>
-                <div>READY_FOR_TASKING →</div>
-              </div>
-            </SectionCard>
-          </div>
-
-          {/* Everything else below stays clean and boxed */}
           <ProjectGrid />
         </div>
       </div>

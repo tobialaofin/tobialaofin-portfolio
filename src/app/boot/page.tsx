@@ -1,13 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const LINES = [
-  "BOOT_SEQUENCE: OK",
-  "AUTH: VERIFIED",
-  "CHANNEL: SECURE",
-  "MONITORING: ACTIVE",
-  "READY_FOR_TASKING →",
+  "> INITIALIZE_UPLINK",
+  "> VALIDATING_IDENTITY",
+  "> LOADING_PROFILE_PAYLOAD",
+  "> HANDSHAKE_OK :: ENC=TLS",
+  "> ROUTE :: /home",
+  "> DECRYPTING_UI_MODULES",
+  "> SYNC :: PORTFOLIO_INDEX",
+  "> DONE",
 ];
 
 function formatTime() {
@@ -19,16 +23,22 @@ function formatTime() {
 }
 
 export default function BootPage() {
+  const router = useRouter();
+
   const [started, setStarted] = useState(false);
   const [i, setI] = useState(0);
   const [done, setDone] = useState(false);
 
-  // ✅ Initialize state without calling setState inside useEffect
   const [timestamp, setTimestamp] = useState<string>(() => formatTime());
-
   const timerRef = useRef<number | null>(null);
 
-  // typing animation
+  // ✅ live clock
+  useEffect(() => {
+    const t = window.setInterval(() => setTimestamp(formatTime()), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+
+  // typing animation + redirect
   useEffect(() => {
     if (!started) return;
 
@@ -40,54 +50,52 @@ export default function BootPage() {
           if (timerRef.current) window.clearInterval(timerRef.current);
           timerRef.current = null;
           setDone(true);
+
+          setTimeout(() => router.push("/home"), 700);
           return prev;
         }
 
         return next;
       });
-    }, 450);
+    }, 220);
 
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
       timerRef.current = null;
     };
-  }, [started]);
-
-  // clock tick (no initial setState-in-effect call needed)
-  useEffect(() => {
-    const t = window.setInterval(() => setTimestamp(formatTime()), 1000);
-    return () => window.clearInterval(t);
-  }, []);
+  }, [started, router]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6">
+    <main className="relative min-h-screen flex items-center justify-center p-6 hud-bg">
       <div className="hud-panel hud-panel-strong w-full max-w-3xl overflow-hidden">
         <div className="px-5 py-4 border-b border-[color:var(--border)] flex items-center justify-between">
           <div className="hud-title">BOOT_SCREEN</div>
-          <div className="text-[11px] text-[color:var(--muted)]">{timestamp}</div>
+          <div className="text-[11px] tracking-widest text-[color:var(--muted)]">{timestamp}</div>
         </div>
 
         <div className="p-5 font-mono text-sm space-y-2">
-          <div className="text-[color:var(--text)]/90">
-            {LINES.slice(0, started ? i : 0).map((line) => (
-              <div key={line}>{line}</div>
-            ))}
-          </div>
-
           {!started ? (
             <button
               onClick={() => setStarted(true)}
-              className="mt-4 rounded-xl border border-[color:var(--border)] px-3 py-2 text-sm text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
+              className="w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--accent-weak)]/10 hover:bg-[color:var(--accent-weak)] transition px-5 py-5 text-left"
             >
-              START
+              <div className="text-sm tracking-widest text-white/90">TAP TO START</div>
+              <div className="mt-2 text-xs text-[color:var(--muted)]">Initialize uplink and load interface</div>
             </button>
-          ) : null}
-
-          {done ? (
-            <div className="mt-4 text-xs text-[color:var(--muted)]">
-              BOOT_COMPLETE ✓
+          ) : (
+            <div className="rounded-xl border border-[color:var(--border)] bg-black/30 p-4">
+              <div className="space-y-2 text-white/90">
+                {LINES.slice(0, i + 1).map((line) => (
+                  <div key={line}>{line}</div>
+                ))}
+                {done ? <div className="text-white/70">&gt; REDIRECTING...</div> : null}
+              </div>
             </div>
-          ) : null}
+          )}
+
+          <div className="mt-6 text-xs text-[color:var(--muted)] leading-relaxed">
+            Visual simulation only (no real hacking).
+          </div>
         </div>
       </div>
     </main>

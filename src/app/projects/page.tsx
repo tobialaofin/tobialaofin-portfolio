@@ -1,4 +1,3 @@
-import Link from "next/link";
 import HUDShell from "@/components/HUDShell";
 
 const projects = [
@@ -13,10 +12,7 @@ const projects = [
       "Produced control-by-control implementation notes and an evidence trail to support third-party assessment readiness.",
     ],
     links: [
-      {
-        label: "VIEW_GITHUB",
-        href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio",
-      },
+      { label: "VIEW_GITHUB", href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio" },
     ],
   },
   {
@@ -40,51 +36,35 @@ const projects = [
       "Exposed stream + analytics through an async API layer and a lightweight UI for monitoring live updates.",
       "Focused on correctness under concurrency (safe updates, bounded memory, predictable latency) and clear observability for debugging.",
     ],
-    links: [
-      {
-        label: "VIEW_GITHUB",
-        href: "https://github.com/tobialaofin/real-time-market-data-stream",
-      },
-    ],
+    links: [{ label: "VIEW_GITHUB", href: "https://github.com/tobialaofin/real-time-market-data-stream" }],
   },
 ];
 
 export default function ProjectsPage() {
   return (
-    <HUDShell
-      active="projects"
-      rightSlot={
-        <Link
-          href="/home"
-          className="rounded-xl border border-[color:var(--border)] px-3 py-2 text-xs text-[color:var(--fg)]/85 hover:bg-[color:var(--accent-weak)]"
-        >
-          ← BACK_TO_HOME
-        </Link>
-      }
-      title="PROJECT_REPOSITORY"
-    >
-      <div className="space-y-4">
+    <HUDShell active="projects" title="PROJECT_REPOSITORY">
+      <div className="space-y-6">
         {projects.map((p) => (
-          <div key={p.name} className="hud-panel p-5">
-            <div className="flex items-start justify-between gap-4">
+          <div key={p.name} className="hud-panel hud-panel-strong p-6">
+            <div className="flex items-start justify-between gap-6">
               <div>
-                <div className="text-[16px] font-bold">{p.name}</div>
-                <div className="mt-1 text-[12px] text-[color:var(--muted)]">{p.tags.join(" • ")}</div>
+                <div className="text-[18px] font-bold text-white">{p.name}</div>
+                <div className="mt-2 text-[12px] text-[color:var(--muted)]">{p.tags.join(" • ")}</div>
               </div>
 
-              <div className="text-[11px] text-[color:var(--muted)]">
-                STATUS: <span className="text-[color:var(--text)]/90">{p.status}</span>
+              <div className="text-[11px] tracking-widest text-[color:var(--muted)]">
+                STATUS: <span className="text-white/90">{p.status}</span>
               </div>
             </div>
 
-            <ul className="mt-4 space-y-2 text-[13px] leading-relaxed list-disc pl-5">
+            <ul className="mt-5 space-y-2 text-[13px] leading-relaxed list-disc pl-5 text-white/85">
               {p.bullets.map((b, idx) => (
                 <li key={`${p.name}-${idx}`}>{b}</li>
               ))}
             </ul>
 
             {p.links.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap gap-4">
                 {p.links.map((l) => (
                   <a key={l.href} className="hud-link" href={l.href} target="_blank" rel="noreferrer">
                     {l.label}
