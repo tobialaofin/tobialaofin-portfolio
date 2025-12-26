@@ -12,6 +12,7 @@ export default function HUDShell({ children, active, title, rightSlot }: HUDShel
   return (
     <main className="relative min-h-screen">
       <div className="hud-frame">
+        {/* Top HUD header */}
         <div className="px-5 py-4 border-b border-[color:var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="hud-title">{title ?? "TOBI_ALAOFIN — PORTFOLIO"}</div>
@@ -20,8 +21,10 @@ export default function HUDShell({ children, active, title, rightSlot }: HUDShel
           <div className="flex items-center gap-3">{rightSlot ? <div>{rightSlot}</div> : null}</div>
         </div>
 
+        {/* Navigation */}
         <NavDock active={active} />
 
+        {/* Page content */}
         <div className="p-5">{children}</div>
       </div>
     </main>

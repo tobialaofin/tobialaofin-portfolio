@@ -3,42 +3,79 @@
 @tailwind utilities;
 
 :root {
-  /* Blue HUD theme */
-  --accent: 59 130 246;         /* rgb */
-  --accentSoft: 59 130 246 / 0.18;
-
+  /* Theme */
   --bg: 0 0 0;
+  --fg: 219 234 254; /* blue-100-ish */
+  --muted: 191 219 254;
+  --border: rgba(59, 130, 246, 0.28);
   --panel: rgba(0, 0, 0, 0.58);
   --panel2: rgba(0, 0, 0, 0.38);
-  --panel3: rgba(0, 0, 0, 0.26);
+  --accent: 59 130 246;
+  --accent-weak: rgba(59, 130, 246, 0.10);
+}
 
-  --text: rgb(219 234 254);     /* slate-ish blue */
-  --muted: rgba(191, 219, 254, 0.65);
-  --border: rgba(59, 130, 246, 0.28);
+html,
+body {
+  height: 100%;
 }
 
 body {
   background: rgb(var(--bg));
-  color: var(--text);
+  color: rgb(var(--fg));
 }
 
-/* ===== HUD building blocks ===== */
+/* Frame centers your content like Kyle's */
+.hud-frame {
+  width: min(1200px, calc(100% - 32px));
+  margin: 18px auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.35));
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.10);
+  overflow: hidden;
+}
+
+/* Panels */
 .hud-panel {
   border: 1px solid var(--border);
-  background: var(--panel);
   border-radius: 16px;
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.10);
-  backdrop-filter: blur(10px);
+  background: var(--panel2);
 }
 
 .hud-panel-strong {
-  box-shadow: 0 0 50px rgba(59, 130, 246, 0.16);
+  background: var(--panel);
 }
 
+/* Text bits */
 .hud-title {
   font-size: 12px;
   letter-spacing: 0.22em;
-  color: var(--muted);
+  text-transform: uppercase;
+  color: rgba(219, 234, 254, 0.95);
+}
+
+.hud-link {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(219, 234, 254, 0.9);
+  text-decoration: none;
+}
+
+.hud-link:hover {
+  color: rgba(219, 234, 254, 1);
+  text-decoration: underline;
+}
+
+.hud-chip {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(59, 130, 246, 0.08);
+  color: rgba(219, 234, 254, 0.92);
 }
 
 .hud-btn {
@@ -47,80 +84,14 @@ body {
   justify-content: center;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: var(--panel2);
   padding: 10px 12px;
   font-size: 12px;
   letter-spacing: 0.18em;
-  color: rgba(219, 234, 254, 0.9);
-  transition: background 150ms ease, transform 150ms ease;
   text-transform: uppercase;
+  color: rgba(219, 234, 254, 0.9);
+  background: transparent;
 }
 
 .hud-btn:hover {
-  background: var(--panel3);
-  transform: translateY(-1px);
-}
-
-.hud-link {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.25);
-  padding: 10px 12px;
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  color: rgba(219, 234, 254, 0.85);
-  text-transform: uppercase;
-  transition: background 150ms ease, transform 150ms ease;
-}
-
-.hud-link:hover {
-  background: rgba(59, 130, 246, 0.08);
-  transform: translateY(-1px);
-}
-
-/* ===== Main frame (Kyle-like centered HUD) ===== */
-.hud-frame {
-  border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 0 80px rgba(59, 130, 246, 0.10);
-}
-
-.hud-topbar {
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.45);
-}
-
-.hud-brand {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.hud-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgb(var(--accent));
-  box-shadow: 0 0 14px rgba(59, 130, 246, 0.65);
-}
-
-.hud-brand-text {
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  color: rgba(219, 234, 254, 0.90);
-  text-transform: uppercase;
-}
-
-.hud-chip {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  padding: 4px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  color: rgba(219, 234, 254, 0.75);
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--accent-weak);
 }

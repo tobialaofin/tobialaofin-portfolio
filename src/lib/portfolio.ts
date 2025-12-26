@@ -9,7 +9,44 @@ export type PortfolioProject = {
   links?: PortfolioProjectLink[];
 };
 
-export const portfolio = {
+export type PortfolioExperience = {
+  title: string;
+  period: string;
+  bullets: string[];
+};
+
+export type PortfolioAbout = {
+  intro: string;
+  originStory: string;
+  now: string;
+  interests: {
+    sports: string[];
+    music: string[];
+    travel: string;
+    gaming: string;
+  };
+};
+
+export type Portfolio = {
+  headline: string;
+  name: string;
+  location: string;
+  focus: string;
+  about: PortfolioAbout;
+  highlights: string[];
+  experience: PortfolioExperience[];
+  projects: PortfolioProject[];
+  certifications: string[];
+  contact: {
+    email: string;
+    linkedin: string;
+    github: string;
+    resumePath: string;
+    headshotPath: string;
+  };
+};
+
+export const portfolio: Portfolio = {
   headline: "Cybersecurity • Cloud • Software Engineering",
   name: "Tobi Alaofin",
   location: "Silver Spring, MD",
@@ -71,7 +108,12 @@ export const portfolio = {
       tags: ["Compliance", "Intune", "Microsoft 365", "NIST 800-171"],
       description:
         "Reviewed an existing Intune environment, helped redesign baseline policies for Windows devices, tested configurations, and produced audit-ready evidence and policy summaries for CMMC Level 2.",
-      links: [{ label: "GitHub", href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio" }],
+      links: [
+        {
+          label: "GitHub",
+          href: "https://github.com/tobialaofin/cloud-security-compliance-portfolio",
+        },
+      ],
     },
     {
       title: "GCC High Deployment & Security Monitoring",
@@ -89,9 +131,14 @@ export const portfolio = {
       tags: ["Python", "FastAPI", "asyncio", "JavaScript"],
       description:
         "Designed a real-time market data streaming system that ingests live/simulated equity prices and computes rolling analytics in memory. Built an async FastAPI backend and a live dashboard with rolling windows, averages, and percent change per symbol.",
-      links: [{ label: "GitHub", href: "https://github.com/tobialaofin/real-time-market-data-stream" }],
+      links: [
+        {
+          label: "GitHub",
+          href: "https://github.com/tobialaofin/real-time-market-data-stream",
+        },
+      ],
     },
-  ] as PortfolioProject[],
+  ],
 
   certifications: [
     "CompTIA Security+ (2024)",

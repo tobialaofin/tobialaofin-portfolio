@@ -16,6 +16,14 @@ const LINES = [
   "> DONE",
 ];
 
+function formatTime() {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const h = d.getHours() % 12 || 12;
+  const ampm = d.getHours() >= 12 ? "PM" : "AM";
+  return `${h}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${ampm}`;
+}
+
 export default function BootPage() {
   const router = useRouter();
 
@@ -24,28 +32,16 @@ export default function BootPage() {
   const [done, setDone] = useState(false);
   const timerRef = useRef<number | null>(null);
 
-  const [timestamp, setTimestamp] = useState<string>("");
+  // ✅ init from function (no setState() inside effect body)
+  const [timestamp, setTimestamp] = useState<string>(() => formatTime());
 
+  // clock tick
   useEffect(() => {
-    const format = () => {
-      const d = new Date();
-      const pad = (n: number) => String(n).padStart(2, "0");
-      const h = d.getHours() % 12 || 12;
-      const ampm = d.getHours() >= 12 ? "PM" : "AM";
-      return `${h}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${ampm}`;
-    };
-
-    // put setState in a callback to avoid the eslint react-hooks/set-state-in-effect rule
-    const tick = () => setTimestamp(format());
-    const immediate = window.setTimeout(tick, 0);
-    const t = window.setInterval(tick, 1000);
-
-    return () => {
-      window.clearInterval(t);
-      window.clearTimeout(immediate);
-    };
+    const t = window.setInterval(() => setTimestamp(formatTime()), 1000);
+    return () => window.clearInterval(t);
   }, []);
 
+  // typing animation + redirect
   useEffect(() => {
     if (!started) return;
 
@@ -54,8 +50,9 @@ export default function BootPage() {
         const next = prev + 1;
 
         if (next >= LINES.length) {
-          window.clearInterval(timerRef.current ?? undefined);
+          if (timerRef.current) window.clearInterval(timerRef.current);
           timerRef.current = null;
+
           setDone(true);
           setTimeout(() => router.push("/home"), 700);
           return prev;
@@ -67,6 +64,7 @@ export default function BootPage() {
 
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
+      timerRef.current = null;
     };
   }, [started, router]);
 
@@ -80,9 +78,7 @@ export default function BootPage() {
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
         <div className="w-full max-w-2xl border border-blue-400/30 bg-black/60 backdrop-blur-md rounded-2xl shadow-[0_0_40px_rgba(59,130,246,0.12)]">
           <div className="px-6 py-5 border-b border-blue-400/20 flex items-center justify-between">
-            <div className="text-sm tracking-widest text-blue-200/80">
-              RESTRICTED_ACCESS_AREA
-            </div>
+            <div className="text-sm tracking-widest text-blue-200/80">RESTRICTED_ACCESS_AREA</div>
             <div className="text-sm text-blue-100/70">{timestamp}</div>
           </div>
 
@@ -100,12 +96,8 @@ export default function BootPage() {
                 onClick={() => setStarted(true)}
                 className="mt-10 w-full rounded-xl border border-blue-400/40 bg-blue-500/10 hover:bg-blue-500/15 transition px-5 py-5 text-left"
               >
-                <div className="text-sm tracking-widest text-blue-100/90">
-                  TAP TO START
-                </div>
-                <div className="mt-2 text-xs text-blue-200/60">
-                  Initialize uplink and load interface
-                </div>
+                <div className="text-sm tracking-widest text-blue-100/90">TAP TO START</div>
+                <div className="mt-2 text-xs text-blue-200/60">Initialize uplink and load interface</div>
               </button>
             ) : (
               <div className="mt-10 rounded-xl border border-blue-400/25 bg-black/40 p-5 font-mono text-sm">
@@ -115,9 +107,7 @@ export default function BootPage() {
                       {line}
                     </div>
                   ))}
-                  {done && (
-                    <div className="text-blue-200/70">&gt; REDIRECTING...</div>
-                  )}
+                  {done ? <div className="text-blue-200/70">&gt; REDIRECTING...</div> : null}
                 </div>
               </div>
             )}
